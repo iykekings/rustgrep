@@ -23,5 +23,11 @@
 
   Or
   ```sh
-    cargon run <cmd> <Cargo>
+    cargo run <cmd> <Cargo>
+  ```
+
+  > Test
+
+  ```sh
+    cargo test
   ```
