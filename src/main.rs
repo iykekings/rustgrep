@@ -1,13 +1,17 @@
-use std::env;
-use std::process::Command;
-//use std::io::{self, Write};
-//use std::env::Args;
+use rustgrep::{run, Config};
+
+use std::{env, process};
 
 fn main() {
-    let options: Vec<String> = env::args().collect();
-    let output = Command::new("ls").output().expect("Couldn't run command").stdout;
-    let list = String::from_utf8(output).unwrap();
-    let result = list.lines().collect::<Vec<&str>>();
-    println!("{:?}", options);
-    println!("{:#?}", result);
+    let config = Config::new(env::args());
+    let result = match config {
+        Ok(conf) => run(conf),
+        Err(err) => {
+            eprintln!("Problem parsing arguments: {}", err);
+            process::exit(1);
+        }
+    };
+    for line in result {
+        println!("{}", line)
+    }
 }
