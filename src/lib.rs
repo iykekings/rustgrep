@@ -1,41 +1,38 @@
-use std::process::{self, Command};
+use std::io::{self, Read};
+use std::{process};
 
 pub struct Config {
-  pub command: String,
   pub query: String,
 }
 
 impl Config {
   pub fn new(mut args: std::env::Args) -> Result<Config, &'static str> {
     args.next();
-    let command = match args.next() {
-      Some(res) => res,
-      None => return Err("Didn't get command"),
-    };
     let query = match args.next() {
       Some(res) => res,
       None => return Err("Didn't get query"),
     };
 
-    Ok(Config { command, query })
+    Ok(Config { query })
   }
 }
+pub fn get_stdin() -> String {
+  let mut buffer = String::new();
+  io::stdin()
+        .read_to_string(&mut buffer)
+        .unwrap_or_else(|err| {
+            eprintln!("Problem getting contents to search: {}", err);
+            process::exit(1);
+        });
+  return buffer;
+}
 
-fn search(query: String, contents: String) -> Vec<String> {
+pub fn search(query: String, contents: String) -> Vec<String> {
   contents
     .lines()
     .filter(|line| line.contains(query.as_str()))
     .map(|m| String::from(m))
     .collect()
-}
-
-pub fn run(config: Config) -> Vec<String> {
-  let output = Command::new(config.command).output().unwrap_or_else(|err| {
-    eprintln!("Problem parsing arguments: {}", err);
-    process::exit(1);
-  });
-  let texts = String::from_utf8(output.stdout).unwrap();
-  search(config.query, texts)
 }
 
 #[cfg(test)]
