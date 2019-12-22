@@ -1,3 +1,6 @@
+![](https://github.com/iykekings/rustgrep/workflows/Test/badge.svg)
+
+
 ## Simple grep tool with Rust
 
 > Install
