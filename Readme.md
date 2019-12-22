@@ -13,17 +13,17 @@
  If you followed the install step above - just Run
  
   ```sh 
-    rustgrep <cmd> <query>
+    <cmd> | rustgrep <query>
   ```
 
   Example:
   ```sh
-    rustgrep ls Cargo
+    ifconfig | rustgrep net
   ```
 
   Or
   ```sh
-    cargo run <cmd> <Cargo>
+    <cmd> | cargo run <query>
   ```
 
   > Test
